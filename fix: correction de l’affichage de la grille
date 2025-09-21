@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Touché-coulé</title>
+    <style>
+        table { border-collapse: collapse; }
+        td { width: 30px; height: 30px; border: 1px solid black; text-align: center; }
+    </style>
+</head>
+<body>
+<h1>Touché-coulé</h1>
+<table id="grid"></table>
+
+<script>
+const GRID_SIZE = 10;
+let grid = [];
+for (let i = 0; i < GRID_SIZE; i++) {
+    grid[i] = [];
+    for (let j = 0; j < GRID_SIZE; j++) {
+        grid[i][j] = 0;
+    }
+}
+
+function displayGrid() {
+    const table = document.getElementById("grid");
+    table.innerHTML = "";
+    for (let i = 0; i < GRID_SIZE; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < GRID_SIZE; j++) {
+            const cell = document.createElement("td");
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+}
+displayGrid();
+</script>
+</body>
+</html>
