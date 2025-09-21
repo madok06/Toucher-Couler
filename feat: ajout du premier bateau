@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Touché-coulé</title>
+    <style>
+        table { border-collapse: collapse; }
+        td { width: 30px; height: 30px; border: 1px solid black; text-align: center; }
+    </style>
+</head>
+<body>
+<h1>Touché-coulé</h1>
+<table id="grid"></table>
+
+<script>
+const GRID_SIZE = 10;
+let grid = [];
+for (let i = 0; i < GRID_SIZE; i++) {
+    grid[i] = [];
+    for (let j = 0; j < GRID_SIZE; j++) {
+        grid[i][j] = 0;
+    }
+}
+
+function displayGrid() {
+    const table = document.getElementById("grid");
+    table.innerHTML = "";
+    for (let i = 0; i < GRID_SIZE; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < GRID_SIZE; j++) {
+            const cell = document.createElement("td");
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+}
+displayGrid();
+
+let ship1 = { x: 8, y: 8, length: 3, direction: "H" };
+function placeShip(ship) {
+    for (let i = 0; i < ship.length; i++) {
+        if (ship.direction === "H") grid[ship.x][ship.y+i] = 1;
+        else grid[ship.x+i][ship.y] = 1;
+    }
+}
+placeShip(ship1);
+displayGrid();
+</script>
+</body>
+</html>
