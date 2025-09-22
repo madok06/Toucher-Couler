@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Touché-coulé</title>
+    <style>
+        table { border-collapse: collapse; }
+        td { width: 30px; height: 30px; border: 1px solid black; text-align: center; cursor: pointer; }
+        td.hit { background-color: red; color: white; }
+        td.miss { background-color: lightblue; }
+    </style>
+</head>
+<body>
+<h1>Touché-coulé</h1>
+<table id="grid"></table>
+<p id="message"></p>
+
+<script>
+const GRID_SIZE = 10;
+let grid = [];
+for (let i = 0; i < GRID_SIZE; i++) {
+    grid[i] = [];
+    for (let j = 0; j < GRID_SIZE; j++) grid[i][j] = 0;
+}
+
+function displayGridColored() {
+    const table = document.getElementById("grid");
+    table.innerHTML = "";
+    for (let i = 0; i < GRID_SIZE; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < GRID_SIZE; j++) {
+            const cell = document.createElement("td");
+            let val = grid[i][j];
+            if (val === 2) cell.classList.add("hit");
+            else if (val === 3) cell.classList.add("miss");
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+}
+displayGridColored();
+
+// Ajout bateaux
+let ships = [
+    { x: 8, y: 7, length: 3, direction: "H" },
+    { x: 2, y: 3, length: 4, direction: "V" }
+];
+
+function placeShips(ships) {
+    for (let ship of ships) {
+        for (let i = 0; i < ship.length; i++) {
+            if (ship.direction === "H") grid[ship.x][ship.y+i] = 1;
+            else grid[ship.x+i][ship.y] = 1;
+        }
+    }
+}
+placeShips(ships);
+
+// Tir corrigé
+function fireCorrected(x,y){
+    x=parseInt(x); y=parseInt(y); // correction
+    if(grid[x][y]===1) grid[x][y]=2;
+    else if(grid[x][y]===0) grid[x][y]=3;
+}
+fireCorrected(8,7);
+fireCorrected(0,0);
+displayGridColored();
+
+// Boucle interactive
+document.querySelectorAll("td").forEach((td,index)=>{
+    const x=Math.floor(index/GRID_SIZE);
+    const y=index%GRID_SIZE;
+    td.addEventListener("click",()=>fireCorrected(x,y));
+});
+</script>
+</body>
+</html>
