@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Touché-coulé</title>
+    <style>
+        table { border-collapse: collapse; margin: 10px 0; }
+        td { width: 30px; height: 30px; border: 1px solid black; text-align: center; cursor: pointer; }
+        td.hit { background-color: darkred; color: white; }
+        td.miss { background-color: #87cefa; }
+        h1 { color: #333; }
+        #message { font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<h1>Touché-coulé</h1>
+<table id="grid"></table>
+<p id="message"></p>
+
+<script>
+const GRID_SIZE = 10;
+let grid = [];
+for (let i = 0; i < GRID_SIZE; i++) {
+    grid[i] = [];
+    for (let j = 0; j < GRID_SIZE; j++) grid[i][j] = 0;
+}
+
+function displayGrid() {
+    const table = document.getElementById("grid");
+    table.innerHTML = "";
+    for(let i=0;i<GRID_SIZE;i++){
+        const row=document.createElement("tr");
+        for(let j=0;j<GRID_SIZE;j++){
+            const cell=document.createElement("td");
+            const val=grid[i][j];
+            if(val===2) cell.classList.add("hit");
+            else if(val===3) cell.classList.add("miss");
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+}
+displayGrid();
+
+// Ajout bateaux
+let ships=[
+    {x:8,y:7,length:3,direction:"H"},
+    {x:2,y:3,length:4,direction:"V"}
+];
+function placeShips(ships){
+    for(let ship of ships){
+        for(let i=0;i<ship.length;i++){
+            if(ship.direction==="H") grid[ship.x][ship.y+i]=1;
+            else grid[ship.x+i][ship.y]=1;
+        }
+    }
+}
+placeShips(ships);
+
+// Tir
+function fire(x,y){
+    x=parseInt(x); y=parseInt(y);
+    const message=document.getElementById("message");
+    if(grid[x][y]===2 || grid[x][y]===3){
+        message.textContent="Vous avez déjà tiré ici !";
+        return;
+    }
+    if(grid[x][y]===1){
+        grid[x][y]=2; message.textContent="Touché !";
+    } else {
+        grid[x][y]=3; message.textContent="Manqué !";
+    }
+    displayGrid();
+}
+fire(8,7);
+fire(0,0);
+
+// Boucle interactive
+document.querySelectorAll("td").forEach((td,index)=>{
+    const x=Math.floor(index/GRID_SIZE);
+    const y=index%GRID_SIZE;
+    td.addEventListener("click",()=>fire(x,y));
+});
+</script>
+</body>
+</html>
